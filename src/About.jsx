@@ -657,26 +657,26 @@ const About = () => {
             </div>
 
             {/* Research Interests */}
-            <div className="bg-white/70 backdrop-blur-xl rounded-2xl border border-purple-200 shadow-lg p-8">
-              <h3 className="text-2xl font-bold text-slate-800 mb-4 flex items-center">
+            <div className="bg-white/70 backdrop-blur-xl rounded-2xl border border-purple-200 shadow-lg p-10">
+              <h3 className="text-2xl font-bold text-slate-800 mb-6 flex items-center">
                 <span className="text-2xl mr-3">🔬</span>
                 Research Interests
               </h3>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="p-4 bg-gradient-to-r from-amber-100 to-orange-100 rounded-lg">
-                  <h4 className="font-semibold text-slate-800 mb-2">🤖 AI Autonomy</h4>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="p-6 bg-gradient-to-r from-amber-100 to-orange-100 rounded-lg">
+                  <h4 className="font-semibold text-slate-800 mb-3">🤖 AI Autonomy</h4>
                   <p className="text-sm text-slate-600">Developing intelligent agents capable of independent decision-making in complex environments</p>
                 </div>
-                <div className="p-4 bg-gradient-to-r from-orange-100 to-yellow-100 rounded-lg">
-                  <h4 className="font-semibold text-slate-800 mb-2">💬 Natural Language Processing</h4>
+                <div className="p-6 bg-gradient-to-r from-orange-100 to-yellow-100 rounded-lg">
+                  <h4 className="font-semibold text-slate-800 mb-3">💬 Natural Language Processing</h4>
                   <p className="text-sm text-slate-600">Creating conversational AI that understands context and emotional nuance</p>
                 </div>
-                <div className="p-4 bg-gradient-to-r from-yellow-100 to-amber-100 rounded-lg">
-                  <h4 className="font-semibold text-slate-800 mb-2">🎮 AI Companions</h4>
+                <div className="p-6 bg-gradient-to-r from-yellow-100 to-amber-100 rounded-lg">
+                  <h4 className="font-semibold text-slate-800 mb-3">🎮 AI Companions</h4>
                   <p className="text-sm text-slate-600">Building meaningful AI relationships that reduce loneliness in digital spaces</p>
                 </div>
-                <div className="p-4 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg">
-                  <h4 className="font-semibold text-slate-800 mb-2">🧪 Experimental AI</h4>
+                <div className="p-6 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg">
+                  <h4 className="font-semibold text-slate-800 mb-3">🧪 Experimental AI</h4>
                   <p className="text-sm text-slate-600">Exploring cutting-edge algorithms through practical Minecraft implementations</p>
                 </div>
               </div>
@@ -729,12 +729,12 @@ const About = () => {
                 Featured Work
               </h3>
               <div className="space-y-6">
-                <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-200">
-                  <h4 className="text-xl font-bold text-slate-800 mb-2">🎮 AI Player Mod</h4>
-                  <p className="text-slate-600 mb-4">
+                <div className="p-8 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-200">
+                  <h4 className="text-xl font-bold text-slate-800 mb-3">🎮 AI Player Mod</h4>
+                  <p className="text-slate-600 mb-5">
                     A Minecraft mod with pathfinding, NLP, reflexes, self-goals, and LLM-powered conversations.
                   </p>
-                  <div className="flex flex-wrap gap-2 mb-4">
+                  <div className="flex flex-wrap gap-2 mb-5">
                     <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">Reinforcement Learning</span>
                     <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded">NLP</span>
                     <span className="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded">Pathfinding</span>
@@ -745,12 +745,12 @@ const About = () => {
                   </a>
                 </div>
                 
-                <div className="p-6 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200">
-                  <h4 className="text-xl font-bold text-slate-800 mb-2">📚 CS Engineering Notes</h4>
-                  <p className="text-slate-600 mb-4">
+                <div className="p-8 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200">
+                  <h4 className="text-xl font-bold text-slate-800 mb-3">📚 CS Engineering Notes</h4>
+                  <p className="text-slate-600 mb-5">
                     A website where CS students can access high-quality custom notes on various Computer Science subjects.
                   </p>
-                  <div className="flex flex-wrap gap-2 mb-4">
+                  <div className="flex flex-wrap gap-2 mb-5">
                     <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded">Education</span>
                     <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">Web Development</span>
                     <span className="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded">Open Source</span>
