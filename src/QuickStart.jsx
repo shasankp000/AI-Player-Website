@@ -42,13 +42,13 @@ export default function QuickStart() {
             <h2 className="text-3xl font-bold text-slate-800">Quick Installation (For Players)</h2>
           </div>
 
-          <div className="mb-8 p-6 bg-gradient-to-r from-green-100 to-emerald-100 rounded-2xl border border-green-200">
-            <h4 className="text-xl font-bold text-green-800 mb-3">🎯 For Playing the Game</h4>
-            <p className="text-green-700 mb-4">
-              If you just want to play with the AI companion, download the mod file and skip to step 6 below.
+          <div className="mb-8 p-6 bg-gradient-to-r from-amber-100 to-orange-100 rounded-2xl border border-amber-200">
+            <h4 className="text-xl font-bold text-amber-800 mb-3">🚨 Important: All Steps Required</h4>
+            <p className="text-amber-700 mb-4">
+              <strong>All users must complete steps 1-7</strong> to play with the AI companion. Ollama setup (step 3) is mandatory even when using external API providers, as the embedding model runs locally.
             </p>
-            <p className="text-sm text-green-600 italic">
-              Development setup is only needed if you want to modify the source code or contribute to the project.
+            <p className="text-sm text-amber-600 italic">
+              Development setup (step 8) is only needed if you want to modify the source code or contribute to the project.
             </p>
           </div>
 
@@ -170,13 +170,23 @@ export default function QuickStart() {
             <h2 className="text-3xl font-bold text-slate-800">Setup Ollama (AI Backend)</h2>
           </div>
 
+          <div className="mb-8 p-6 bg-gradient-to-r from-red-100 to-pink-100 rounded-2xl border border-red-200">
+            <h4 className="text-xl font-bold text-red-800 mb-3">🚨 Required for ALL Users</h4>
+            <p className="text-red-700 mb-4">
+              <strong>Ollama is mandatory for everyone</strong> - even if you plan to use OpenAI, Claude, Gemini, or other external providers. The embedding model (nomic-embed-text) runs locally and is essential for the AI's functionality.
+            </p>
+            <div className="text-sm text-red-600 bg-red-50 p-3 rounded">
+              <strong>Note:</strong> This requirement will be removed in a future update when embedding functionality is moved to external providers, but for now, Ollama is non-optional.
+            </div>
+          </div>
+
           <div className="mb-8 p-6 bg-gradient-to-r from-blue-100 to-cyan-100 rounded-2xl border border-blue-200">
             <h4 className="text-xl font-bold text-blue-800 mb-3">🤖 What is Ollama?</h4>
             <p className="text-blue-700 mb-4">
               Ollama is the AI backend that powers your bot's intelligence. It runs locally on your machine and provides the language models that enable natural conversation.
             </p>
             <div className="text-sm text-blue-600 bg-blue-50 p-3 rounded">
-              <strong>Note:</strong> Even when using custom API providers, Ollama is still required for the embedding model (this will be separated in a future update).
+              <strong>For External API Users:</strong> You'll still need Ollama running for the embedding model, but your main conversations will use your chosen external provider (OpenAI, Claude, etc.).
             </div>
           </div>
 
@@ -270,11 +280,114 @@ export default function QuickStart() {
           </div>
         </section>
 
+        {/* JVM Arguments Section */}
+        <section className="mb-16 p-8 bg-white/70 backdrop-blur-xl rounded-3xl border border-teal-200 shadow-lg">
+          <div className="flex items-center mb-8">
+            <div className="w-12 h-12 bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4">
+              4
+            </div>
+            <h2 className="text-3xl font-bold text-slate-800">JVM Arguments Setup (Critical)</h2>
+          </div>
+
+          <div className="mb-6 p-4 bg-red-100 rounded-lg border border-red-200">
+            <h4 className="text-lg font-bold text-red-800 mb-2">🚨 Important: Required Before Launch</h4>
+            <p className="text-red-700 text-sm">
+              You <strong>must</strong> provide the appropriate JVM argument before launching Minecraft, or the mod will not work properly.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            <div>
+              <h4 className="text-xl font-bold text-slate-800 mb-4">🔧 Available Providers</h4>
+              <div className="space-y-3">
+                <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
+                  <h5 className="font-semibold text-blue-800">Local Ollama (Default)</h5>
+                  <code className="text-sm text-blue-700 bg-blue-100 px-2 py-1 rounded">-Daiplayer.llmMode=ollama</code>
+                  <p className="text-xs text-blue-600 mt-1">Use local Ollama models (recommended for privacy)</p>
+                </div>
+                
+                <div className="p-3 bg-green-50 rounded-lg border border-green-200">
+                  <h5 className="font-semibold text-green-800">OpenAI</h5>
+                  <code className="text-sm text-green-700 bg-green-100 px-2 py-1 rounded">-Daiplayer.llmMode=openai</code>
+                  <p className="text-xs text-green-600 mt-1">GPT-3.5, GPT-4, GPT-4o models</p>
+                </div>
+                
+                <div className="p-3 bg-purple-50 rounded-lg border border-purple-200">
+                  <h5 className="font-semibold text-purple-800">Anthropic Claude</h5>
+                  <code className="text-sm text-purple-700 bg-purple-100 px-2 py-1 rounded">-Daiplayer.llmMode=claude</code>
+                  <p className="text-xs text-purple-600 mt-1">Claude-3, Claude-3.5 Sonnet</p>
+                </div>
+                
+                <div className="p-3 bg-orange-50 rounded-lg border border-orange-200">
+                  <h5 className="font-semibold text-orange-800">Google Gemini</h5>
+                  <code className="text-sm text-orange-700 bg-orange-100 px-2 py-1 rounded">-Daiplayer.llmMode=gemini</code>
+                  <p className="text-xs text-orange-600 mt-1">Gemini Pro, Ultra models</p>
+                </div>
+                
+                <div className="p-3 bg-cyan-50 rounded-lg border border-cyan-200">
+                  <h5 className="font-semibold text-cyan-800">xAI Grok</h5>
+                  <code className="text-sm text-cyan-700 bg-cyan-100 px-2 py-1 rounded">-Daiplayer.llmMode=grok</code>
+                  <p className="text-xs text-cyan-600 mt-1">Latest Grok models</p>
+                </div>
+                
+                <div className="p-3 bg-indigo-50 rounded-lg border border-indigo-200">
+                  <h5 className="font-semibold text-indigo-800">Custom OpenAI-Compatible</h5>
+                  <code className="text-sm text-indigo-700 bg-indigo-100 px-2 py-1 rounded">-Daiplayer.llmMode=custom</code>
+                  <p className="text-xs text-indigo-600 mt-1">OpenRouter, TogetherAI, Perplexity, Groq, etc.</p>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="text-xl font-bold text-slate-800 mb-4">📝 How to Add JVM Arguments</h4>
+              <div className="space-y-4">
+                <div className="p-4 bg-slate-100 rounded-lg">
+                  <h5 className="font-semibold text-slate-800 mb-2">Minecraft Launcher (Official)</h5>
+                  <ol className="text-sm text-slate-700 space-y-1 list-decimal list-inside">
+                    <li>Open Minecraft Launcher</li>
+                    <li>Go to "Installations" tab</li>
+                    <li>Click the three dots on your profile</li>
+                    <li>Select "Edit"</li>
+                    <li>Click "More Options"</li>
+                    <li>Add to "JVM Arguments" field</li>
+                  </ol>
+                </div>
+                
+                <div className="p-4 bg-slate-100 rounded-lg">
+                  <h5 className="font-semibold text-slate-800 mb-2">Modrinth App</h5>
+                  <ol className="text-sm text-slate-700 space-y-1 list-decimal list-inside">
+                    <li>Open your modpack/profile</li>
+                    <li>Click "Options" → "Edit"</li>
+                    <li>Go to "Java" tab</li>
+                    <li>Add to "JVM arguments" field</li>
+                  </ol>
+                </div>
+                
+                <div className="p-4 bg-slate-100 rounded-lg">
+                  <h5 className="font-semibold text-slate-800 mb-2">CurseForge / Other Launchers</h5>
+                  <ol className="text-sm text-slate-700 space-y-1 list-decimal list-inside">
+                    <li>Go to your modpack settings</li>
+                    <li>Find "Java Settings" or "Additional Arguments"</li>
+                    <li>Add the argument to JVM/Java arguments</li>
+                  </ol>
+                </div>
+              </div>
+
+              <div className="mt-4 p-4 bg-yellow-100 rounded-lg border border-yellow-200">
+                <h5 className="font-semibold text-yellow-800 mb-2">⚠️ Important Note</h5>
+                <p className="text-sm text-yellow-700">
+                  Even when using custom API providers, Ollama must still be running since the embedding model (nomic-embed-text) is local and required. This will be separated in a future update.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* API Configuration Section */}
         <section className="mb-16 p-8 bg-white/70 backdrop-blur-xl rounded-3xl border border-indigo-200 shadow-lg">
           <div className="flex items-center mb-8">
             <div className="w-12 h-12 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4">
-              4
+              5
             </div>
             <h2 className="text-3xl font-bold text-slate-800">API Configuration</h2>
           </div>
@@ -367,9 +480,9 @@ export default function QuickStart() {
         <section className="mb-16 p-8 bg-white/70 backdrop-blur-xl rounded-3xl border border-purple-200 shadow-lg">
           <div className="flex items-center mb-8">
             <div className="w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4">
-              5
+              6
             </div>
-            <h2 className="text-3xl font-bold text-slate-800">Custom API Providers (Advanced)</h2>
+            <h2 className="text-3xl font-bold text-slate-800">Custom API Providers & Web Search (Advanced)</h2>
           </div>
 
           <div className="mb-6 p-4 bg-purple-100 rounded-lg border border-purple-200">
@@ -433,15 +546,51 @@ export default function QuickStart() {
 
               <div className="mt-6 p-4 bg-yellow-100 rounded-lg border border-yellow-200">
                 <h5 className="font-semibold text-yellow-800 mb-2">⚠️ Web Search Configuration</h5>
-                <p className="text-sm text-yellow-700 mb-2">
-                  For web search functionality, configure search providers:
+                <p className="text-sm text-yellow-700 mb-3">
+                  Configure web search functionality for enhanced AI knowledge:
                 </p>
-                <div className="text-xs text-yellow-600">
-                  <p>• <strong>Gemini Search:</strong> Uses your LLM API key automatically</p>
-                  <p>• <strong>Serper.dev:</strong> Get API key and add to <code>ai_search_config.json</code></p>
+                
+                <div className="space-y-3">
+                  <div className="p-3 bg-white rounded-lg border border-yellow-300">
+                    <h6 className="font-semibold text-yellow-800 text-sm">Gemini Search (Automatic)</h6>
+                    <p className="text-xs text-yellow-700">Uses your LLM API key automatically if Gemini is selected</p>
+                  </div>
+                  
+                  <div className="p-3 bg-white rounded-lg border border-yellow-300">
+                    <h6 className="font-semibold text-yellow-800 text-sm">Serper.dev Search</h6>
+                    <p className="text-xs text-yellow-700 mb-2">1. Get API key from <a href="https://serper.dev/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">serper.dev</a></p>
+                    <p className="text-xs text-yellow-700 mb-2">2. Navigate to config folder in-game</p>
+                    <p className="text-xs text-yellow-700">3. Open <code className="bg-yellow-200 px-1 rounded">ai_search_config.json</code> and add your key</p>
+                  </div>
                 </div>
+                
                 <img src="https://cdn.modrinth.com/data/cached_images/b3dbb07a9e166d4d0860d490d8d5d938e4e6cd50.png" 
                      alt="Web Search Config" className="w-full mt-3 rounded" />
+                <p className="text-xs text-yellow-600 text-center mt-1">Example ai_search_config.json configuration</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 p-6 bg-gradient-to-r from-red-100 to-orange-100 rounded-2xl border border-red-200">
+            <h4 className="text-xl font-bold text-red-800 mb-3">⚠️ Important Notes</h4>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <h5 className="font-semibold text-red-800 mb-2">💡 Best Practices:</h5>
+                <ul className="text-red-700 text-sm space-y-1">
+                  <li>• Create a separate modpack for AI Player</li>
+                  <li>• Keep Ollama running in background during gameplay</li>
+                  <li>• Ollama uses minimal memory, won't affect performance significantly</li>
+                  <li>• Test with training mode first to verify installation</li>
+                </ul>
+              </div>
+              <div>
+                <h5 className="font-semibold text-red-800 mb-2">🚨 Troubleshooting Tips:</h5>
+                <ul className="text-red-700 text-sm space-y-1">
+                  <li>• "Custom provider selected but no API URL configured" - Set Custom API URL field</li>
+                  <li>• "Custom API key not set in config!" - Set Custom API Key field</li>
+                  <li>• Empty model list - Check API key validity and URL correctness</li>
+                  <li>• Connection errors - Verify provider URL accessibility and OpenAI API format support</li>
+                </ul>
               </div>
             </div>
           </div>
@@ -451,12 +600,79 @@ export default function QuickStart() {
         <section className="mb-16 p-8 bg-white/70 backdrop-blur-xl rounded-3xl border border-red-200 shadow-lg">
           <div className="flex items-center mb-8">
             <div className="w-12 h-12 bg-gradient-to-r from-red-400 to-pink-400 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4">
-              6
+              7
             </div>
-            <h2 className="text-3xl font-bold text-slate-800">First Launch & Basic Commands</h2>
+            <h2 className="text-3xl font-bold text-slate-800">First Launch & Game Setup</h2>
+          </div>
+
+          <div className="mb-8 p-6 bg-gradient-to-r from-amber-100 to-yellow-100 rounded-2xl border border-amber-200">
+            <h4 className="text-xl font-bold text-amber-800 mb-3">🚀 Critical First Launch Steps</h4>
+            <div className="space-y-3">
+              <div className="flex items-start">
+                <div className="w-6 h-6 bg-amber-500 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3 mt-1">1</div>
+                <div>
+                  <h5 className="font-semibold text-amber-800">Start Minecraft with JVM Arguments</h5>
+                  <p className="text-sm text-amber-700">Launch with your chosen LLM provider argument</p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <div className="w-6 h-6 bg-amber-500 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3 mt-1">2</div>
+                <div>
+                  <h5 className="font-semibold text-amber-800">Wait for NLP Model Download</h5>
+                  <p className="text-sm text-amber-700">Before loading a world, wait for NLP models to download (first time only)</p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <div className="w-6 h-6 bg-amber-500 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3 mt-1">3</div>
+                <div>
+                  <h5 className="font-semibold text-amber-800">Check Model Directory Structure</h5>
+                  <p className="text-sm text-amber-700">Ensure all NLP model files are downloaded completely</p>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
+            <div>
+              <h4 className="text-xl font-bold text-slate-800 mb-4">⏳ First Launch Process</h4>
+              
+              <div className="mb-6 p-4 bg-blue-100 rounded-lg border border-blue-200">
+                <h5 className="font-semibold text-blue-800 mb-2">🧠 NLP Model Loading</h5>
+                <p className="text-sm text-blue-700 mb-3">
+                  When the world loading screen reaches 100%, the game might lag briefly due to an NLP model being loaded. This is normal for first-time setup.
+                </p>
+                <div className="text-xs text-blue-600 bg-blue-50 p-2 rounded">
+                  Wait for this directory structure to appear in your config folder:
+                </div>
+                <div className="mt-3">
+                  <img src="https://cdn.modrinth.com/data/cached_images/9c21798c363bbf3fc4c5bb0044ebb6ea63372eb9.png" 
+                       alt="NLP Models directory structure" className="w-full rounded" />
+                  <p className="text-xs text-blue-600 text-center mt-1">NLP models directory structure (one-time download)</p>
+                </div>
+              </div>
+
+              <div className="p-4 bg-green-100 rounded-lg border border-green-200">
+                <h5 className="font-semibold text-green-800 mb-2">⚙️ In-Game Configuration</h5>
+                <div className="space-y-2 text-sm text-green-700">
+                  <p>1. Once in-game, open the Config Manager:</p>
+                  <code className="bg-green-200 px-2 py-1 rounded text-xs">/configMan</code>
+                  
+                  <p className="mt-2">2. If using non-Ollama provider, configure:</p>
+                  <ul className="list-disc list-inside text-xs ml-4 space-y-1">
+                    <li>Select your desired LLM provider</li>
+                    <li>Set API keys in the API Keys section</li>
+                    <li>Choose your preferred model</li>
+                  </ul>
+                  
+                  <p className="mt-2">3. For Ollama users:</p>
+                  <ul className="list-disc list-inside text-xs ml-4 space-y-1">
+                    <li>Select your preferred local model (qwen2.5:7b recommended)</li>
+                    <li>Ensure Ollama server is running in background</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
             <div>
               <h4 className="text-xl font-bold text-slate-800 mb-4">🎮 Spawn Your AI Companion</h4>
               <div className="p-4 bg-slate-800 text-green-400 rounded-lg font-mono text-sm mb-4">
@@ -467,17 +683,29 @@ export default function QuickStart() {
                 <div><span className="text-yellow-400">/bot</span> spawn Alex training</div>
               </div>
               
-              <div className="p-4 bg-blue-100 rounded-lg border border-blue-200">
+              <div className="p-4 bg-blue-100 rounded-lg border border-blue-200 mb-4">
                 <h5 className="font-semibold text-blue-800 mb-2">🎯 Mode Explanation</h5>
                 <div className="text-sm text-blue-700 space-y-1">
-                  <p>• <strong>play</strong> - Normal AI mode with language model connection</p>
-                  <p>• <strong>training</strong> - Training mode without LLM (for testing movement)</p>
+                  <p>• <strong>play</strong> - Normal AI mode with full language model connection and intelligence</p>
+                  <p>• <strong>training</strong> - Training mode without LLM (for testing movement and basic functions)</p>
+                </div>
+              </div>
+
+              <div className="p-4 bg-purple-100 rounded-lg border border-purple-200">
+                <h5 className="font-semibold text-purple-800 mb-2">💡 Important Tips</h5>
+                <div className="text-sm text-purple-700 space-y-1">
+                  <p>• Always ensure Ollama server is running before starting Minecraft</p>
+                  <p>• Create a separate modpack for AI Player to keep Ollama settings organized</p>
+                  <p>• Wait for complete NLP model download before first world load</p>
+                  <p>• Test with 'training' mode first to verify basic functionality</p>
                 </div>
               </div>
             </div>
+          </div>
 
-            <div>
-              <h4 className="text-xl font-bold text-slate-800 mb-4">💬 Essential Commands</h4>
+          <div className="mt-8">
+            <h4 className="text-xl font-bold text-slate-800 mb-4">💬 Essential Commands</h4>
+            <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-3">
                 <div className="p-3 bg-green-50 rounded-lg border border-green-200">
                   <h5 className="font-semibold text-green-800">Talk to Bot</h5>
@@ -490,7 +718,9 @@ export default function QuickStart() {
                   <br />
                   <code className="text-sm text-blue-700">/bot walk &lt;bot&gt; &lt;seconds&gt;</code>
                 </div>
-                
+              </div>
+              
+              <div className="space-y-3">
                 <div className="p-3 bg-purple-50 rounded-lg border border-purple-200">
                   <h5 className="font-semibold text-purple-800">Information Commands</h5>
                   <code className="text-sm text-purple-700">/bot detect_entities &lt;bot&gt;</code>
@@ -515,7 +745,7 @@ export default function QuickStart() {
         <section className="mb-16 p-8 bg-white/70 backdrop-blur-xl rounded-3xl border border-slate-200 shadow-lg">
           <div className="flex items-center mb-8">
             <div className="w-12 h-12 bg-gradient-to-r from-slate-400 to-gray-500 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4">
-              💻
+              8
             </div>
             <h2 className="text-3xl font-bold text-slate-800">Development Setup (Optional)</h2>
           </div>
