@@ -144,45 +144,17 @@ const Documentation = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50">
-      {/* Header */}
-      <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-xl border-b border-amber-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center">
-              <Link to="/" className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gradient-to-r from-amber-400 to-orange-400 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-lg">AI</span>
-                </div>
-                <div>
-                  <h1 className="text-xl font-bold text-slate-800">AI-Player</h1>
-                  <p className="text-sm text-amber-600">Documentation</p>
-                </div>
-              </Link>
-            </div>
-            
-            {/* Mobile menu button */}
-            <button
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="md:hidden p-2 rounded-lg bg-amber-100 text-amber-700 hover:bg-amber-200 transition-colors"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </header>
-
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 pt-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex gap-8">
           {/* Sidebar */}
-          <aside className={`${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 fixed md:relative top-0 left-0 z-30 w-80 h-screen md:h-auto bg-white/70 backdrop-blur-xl rounded-2xl border border-amber-200 shadow-lg p-6 transition-transform duration-300 md:transition-none overflow-y-auto`}>
+          <aside className={`${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 fixed md:relative top-20 md:top-0 left-0 z-30 w-80 md:w-80 h-[calc(100vh-5rem)] md:h-auto bg-white/70 backdrop-blur-xl rounded-2xl border border-amber-200 shadow-lg p-6 transition-transform duration-300 md:transition-none overflow-y-auto`}>
             <div className="flex justify-between items-center mb-6 md:hidden">
               <h2 className="text-lg font-bold text-slate-800">Table of Contents</h2>
               <button
                 onClick={() => setSidebarOpen(false)}
                 className="p-2 rounded-lg bg-amber-100 text-amber-700 hover:bg-amber-200 transition-colors"
+                aria-label="Close table of contents"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -251,8 +223,28 @@ const Documentation = () => {
             />
           )}
 
+          {/* Floating TOC button for mobile */}
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="md:hidden fixed bottom-6 right-6 z-30 w-14 h-14 bg-amber-500 hover:bg-amber-600 text-white rounded-full shadow-lg transition-all duration-200 hover:scale-110 flex items-center justify-center"
+            aria-label="Open table of contents"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+
           {/* Main Content */}
-          <main className="flex-1 min-w-0">
+          <main className="flex-1 min-w-0 md:ml-0">
+            {/* Navigation breadcrumb */}
+            <div className="mb-6 flex items-center justify-between">
+              <div className="flex items-center space-x-2 text-sm text-slate-600">
+                <Link to="/" className="hover:text-amber-600 transition-colors">← Home</Link>
+                <span>/</span>
+                <span className="text-amber-600 font-medium">Documentation</span>
+              </div>
+            </div>
+
             {/* Welcome Section */}
             <section id="overview" className="mb-16">
               <div className="bg-gradient-to-r from-amber-100/80 to-orange-100/80 rounded-3xl border border-amber-200 shadow-lg p-8 backdrop-blur-sm">
@@ -711,11 +703,11 @@ const Documentation = () => {
                         />
                       </div>
                       
-                      <div className="mt-4 flex items-center justify-between text-sm text-slate-600">
-                        <div className="flex items-center space-x-4">
+                      <div className="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 text-sm text-slate-600">
+                        <div className="flex flex-wrap items-center gap-4">
                           <span className="flex items-center">
                             <span className="w-3 h-3 bg-red-500 rounded-full mr-2"></span>
-                            Live Demonstration
+                            Live Demo
                           </span>
                           <span className="flex items-center">
                             <span className="w-3 h-3 bg-green-500 rounded-full mr-2"></span>
@@ -730,14 +722,14 @@ const Documentation = () => {
                           href="https://www.youtube.com/watch?v=6zEORx1OKfA" 
                           target="_blank" 
                           rel="noopener noreferrer"
-                          className="text-red-600 hover:text-red-700 font-medium transition-colors"
+                          className="text-red-600 hover:text-red-700 font-medium transition-colors whitespace-nowrap"
                         >
                           Watch on YouTube ↗
                         </a>
                       </div>
                     </div>
 
-                    <div className="mt-6 grid md:grid-cols-3 gap-4">
+                    <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
                       <div className="p-4 bg-white/40 rounded-lg border border-red-100 text-center">
                         <div className="text-2xl font-bold text-red-600 mb-1">Early Stage</div>
                         <p className="text-sm text-slate-600">Foundation Q-learning implementation</p>

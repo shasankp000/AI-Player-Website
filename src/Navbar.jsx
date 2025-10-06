@@ -84,10 +84,10 @@ const Navbar = () => {
               className="inline-flex items-center justify-center p-2 rounded-md text-amber-700 hover:text-amber-900 hover:bg-amber-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-amber-500"
             >
               <span className="sr-only">Open main menu</span>
-              <div className="w-6 h-6 relative">
+              <div className="w-6 h-6 relative flex items-center justify-center">
                 <span
                   className={`absolute block h-0.5 w-6 bg-current transform transition duration-300 ease-in-out ${
-                    isOpen ? 'rotate-45 translate-y-0' : '-translate-y-2'
+                    isOpen ? 'rotate-45' : '-translate-y-2'
                   }`}
                 />
                 <span
@@ -97,7 +97,7 @@ const Navbar = () => {
                 />
                 <span
                   className={`absolute block h-0.5 w-6 bg-current transform transition duration-300 ease-in-out ${
-                    isOpen ? '-rotate-45 translate-y-0' : 'translate-y-2'
+                    isOpen ? '-rotate-45' : 'translate-y-2'
                   }`}
                 />
               </div>
@@ -109,7 +109,7 @@ const Navbar = () => {
       {/* Mobile Navigation */}
       {isOpen && (
         <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-amber-50/95 backdrop-blur-xl border-t border-amber-200">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-amber-50/95 backdrop-blur-xl border-t border-amber-200 mt-2">
             {navItems.map((item) => (
               item.external ? (
                 <a
