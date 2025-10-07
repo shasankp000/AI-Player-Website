@@ -3,39 +3,186 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>The AI-Player Project</title>
+    <title>Page Not Found - AI-Player</title>
     <link rel="icon" href="https://raw.githubusercontent.com/shasankp000/AI-Player/1.21.1/src/main/resources/assets/ai-player/icon.png" type="image/png" />
     <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/shasankp000/AI-Player/1.21.1/src/main/resources/assets/ai-player/icon.png" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
-      // Single Page Apps for GitHub Pages
-      // MIT License
-      // https://github.com/rafgraph/spa-github-pages
-      // This script takes the current url and converts the path and query
-      // string into just a query string, and then redirects the browser
-      // to the new url with only a query string and hash fragment,
-      // e.g. https://www.foo.tld/one/two?a=b&c=d#qwe, becomes
-      // https://www.foo.tld/?/one/two&a=b~and~c=d#qwe
-      // Note: this 404.html file must be at least 512 bytes for it to work
-      // with Internet Explorer (it is currently > 512 bytes)
-
-      // If you're creating a Project Pages site and NOT using a custom domain,
-      // then set pathSegmentsToKeep to 1 (enterprise users may need to set it to > 1).
-      // This way the code will only replace the route part and not the real directory.
-      // For example: https://username.github.io/repo-name/one/two?a=b&c=d#qwe becomes
-      // https://username.github.io/repo-name/?/one/two&a=b~and~c=d#qwe
-      // Otherwise, leave pathSegmentsToKeep as 0.
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'ai-orange': '#ea580c',
+              'ai-amber': '#f59e0b',
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+      body { font-family: 'Inter', sans-serif; }
+      
+      .glow-effect {
+        box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+      }
+      
+      .floating-animation {
+        animation: float 3s ease-in-out infinite;
+      }
+      
+      @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+      }
+      
+      .particle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: linear-gradient(45deg, #f59e0b, #ea580c);
+        border-radius: 50%;
+        animation: particle-float 4s ease-in-out infinite;
+      }
+      
+      @keyframes particle-float {
+        0%, 100% { 
+          transform: translateY(0px) translateX(0px);
+          opacity: 0.7;
+        }
+        50% { 
+          transform: translateY(-20px) translateX(10px);
+          opacity: 1;
+        }
+      }
+    </style>
+    <script>
+      // Single Page Apps for GitHub Pages redirect logic
       var pathSegmentsToKeep = 1;
-
-      var l = window.location;
-      l.replace(
-        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-        l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
-        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
-        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-        l.hash
-      );
+      
+      setTimeout(() => {
+        var l = window.location;
+        l.replace(
+          l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+          l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
+          l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+          (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+          l.hash
+        );
+      }, 2000); // Give user 2 seconds to see the 404 page before redirecting
     </script>
   </head>
-  <body>
+  <body class="bg-gradient-to-br from-slate-50 via-orange-50 to-amber-50 min-h-screen">
+    <!-- Floating particles -->
+    <div class="particle" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
+    <div class="particle" style="top: 60%; left: 80%; animation-delay: 1s;"></div>
+    <div class="particle" style="top: 30%; left: 70%; animation-delay: 2s;"></div>
+    <div class="particle" style="top: 80%; left: 20%; animation-delay: 1.5s;"></div>
+    
+    <div class="flex items-center justify-center min-h-screen p-4">
+      <div class="text-center max-w-2xl mx-auto">
+        <!-- AI-Player Logo -->
+        <div class="floating-animation mb-8">
+          <div class="w-24 h-24 mx-auto bg-gradient-to-br from-orange-500 to-amber-600 rounded-2xl flex items-center justify-center glow-effect">
+            <img 
+              src="https://raw.githubusercontent.com/shasankp000/AI-Player/1.21.1/src/main/resources/assets/ai-player/icon.png" 
+              alt="AI-Player" 
+              class="w-16 h-16"
+              onerror="this.style.display='none'"
+            />
+            <!-- Fallback if image fails -->
+            <div class="w-16 h-16 bg-white rounded-xl flex items-center justify-center text-orange-600 font-bold text-2xl" style="display: none;">
+              AI
+            </div>
+          </div>
+        </div>
+        
+        <!-- 404 Title -->
+        <h1 class="text-8xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent mb-4">
+          404
+        </h1>
+        
+        <!-- Error Message -->
+        <h2 class="text-3xl font-semibold text-slate-800 mb-4">
+          Page Not Found
+        </h2>
+        
+        <p class="text-lg text-slate-600 mb-8 leading-relaxed">
+          Oops! The AI couldn't locate the page you're looking for. It seems this path doesn't exist in our neural network.
+        </p>
+        
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+          <button 
+            onclick="window.history.back()" 
+            class="px-6 py-3 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-lg font-medium hover:from-orange-600 hover:to-amber-600 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+          >
+            ← Go Back
+          </button>
+          
+          <a 
+            href="#/" 
+            class="px-6 py-3 border-2 border-orange-500 text-orange-600 rounded-lg font-medium hover:bg-orange-500 hover:text-white transition-all duration-200 transform hover:scale-105"
+          >
+            🏠 Home Page
+          </a>
+        </div>
+        
+        <!-- Quick Links -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+          <a href="#/quick-start" class="p-3 bg-white/70 rounded-lg hover:bg-white transition-colors text-slate-700 hover:text-orange-600">
+            📚 Quick Start
+          </a>
+          <a href="#/documentation" class="p-3 bg-white/70 rounded-lg hover:bg-white transition-colors text-slate-700 hover:text-orange-600">
+            📖 Documentation
+          </a>
+          <a href="#/about" class="p-3 bg-white/70 rounded-lg hover:bg-white transition-colors text-slate-700 hover:text-orange-600">
+            👥 About
+          </a>
+          <a href="https://github.com/shasankp000/AI-Player" class="p-3 bg-white/70 rounded-lg hover:bg-white transition-colors text-slate-700 hover:text-orange-600">
+            💻 GitHub
+          </a>
+        </div>
+        
+        <!-- Auto-redirect notice -->
+        <div class="mt-8 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+          <p class="text-amber-800 text-sm">
+            🤖 Auto-redirecting to the correct page in <span id="countdown">2</span> seconds...
+          </p>
+        </div>
+      </div>
+    </div>
+    
+    <script>
+      // Countdown timer
+      let seconds = 2;
+      const countdownElement = document.getElementById('countdown');
+      
+      const timer = setInterval(() => {
+        seconds--;
+        if (countdownElement) {
+          countdownElement.textContent = seconds;
+        }
+        if (seconds <= 0) {
+          clearInterval(timer);
+        }
+      }, 1000);
+      
+      // Add some interactive particles on click
+      document.addEventListener('click', (e) => {
+        for (let i = 0; i < 5; i++) {
+          const particle = document.createElement('div');
+          particle.className = 'particle';
+          particle.style.left = e.clientX + 'px';
+          particle.style.top = e.clientY + 'px';
+          particle.style.animationDelay = (i * 0.1) + 's';
+          document.body.appendChild(particle);
+          
+          setTimeout(() => {
+            particle.remove();
+          }, 2000);
+        }
+      });
+    </script>
   </body>
 </html>
