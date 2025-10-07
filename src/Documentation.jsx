@@ -226,7 +226,7 @@ const Documentation = () => {
           {/* Floating TOC button for mobile */}
           <button
             onClick={() => setSidebarOpen(true)}
-            className="md:hidden fixed bottom-6 right-6 z-30 w-14 h-14 bg-amber-500 hover:bg-amber-600 text-white rounded-full shadow-lg transition-all duration-200 hover:scale-110 flex items-center justify-center"
+            className="md:hidden fixed bottom-6 right-8 z-30 w-14 h-14 bg-amber-500 hover:bg-amber-600 text-white rounded-full shadow-lg transition-all duration-200 hover:scale-110 flex items-center justify-center"
             aria-label="Open table of contents"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1759,23 +1759,35 @@ const Documentation = () => {
                               LLM generates structured JSON with function sequence and placeholder parameters
                             </p>
                             <div className="bg-yellow-50 p-3 rounded-lg">
-                              <pre className="text-xs text-slate-700 overflow-x-auto">
+                              <pre className="text-xs text-slate-700 overflow-x-auto whitespace-pre-wrap break-words">
 {`{
   "pipeline": [
     {
       "functionName": "detectBlocks",
       "parameters": [
-        { "parameterName": "blockType", "parameterValue": "diamond_ore" }
+        { 
+          "parameterName": "blockType", 
+          "parameterValue": "diamond_ore" 
+        }
       ]
     },
     {
       "functionName": "goTo",
       "parameters": [
-        { "parameterName": "x", "parameterValue": "$lastDetectedBlock.x" },
-        { "parameterName": "sprint", "parameterValue": "true" }
+        { 
+          "parameterName": "x", 
+          "parameterValue": "$lastDetectedBlock.x" 
+        },
+        { 
+          "parameterName": "sprint", 
+          "parameterValue": "true" 
+        }
       ]
     },
-    { "functionName": "mineBlock", "parameters": [...] }
+    { 
+      "functionName": "mineBlock", 
+      "parameters": [...] 
+    }
   ]
 }`}
                               </pre>
