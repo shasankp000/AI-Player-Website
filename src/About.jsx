@@ -9,6 +9,169 @@ const About = () => {
     loading: true
   });
 
+  // State for dynamic GitHub stats
+  const [githubStats, setGithubStats] = useState({
+    totalCommits: 0,
+    publicRepos: 0,
+    followers: 0,
+    thisYearCommits: 0,
+    thisMonthCommits: 0,
+    loading: true
+  });
+
+  // State for dynamic profile data
+  const [profileData, setProfileData] = useState({
+    bio: '',
+    name: '',
+    company: '',
+    location: '',
+    blog: '',
+    loading: true
+  });
+
+  // State for achievements
+  const [achievements, setAchievements] = useState({
+    data: [],
+    loading: true
+  });
+
+  // State for GitHub activity timeline
+  const [githubActivity, setGithubActivity] = useState({
+    contributions: [],
+    recentRepos: [],
+    loading: true
+  });
+
+  // Fetch GitHub profile stats and bio
+  useEffect(() => {
+    const fetchGitHubData = async () => {
+      try {
+        // Fetch user profile data
+        const userResponse = await fetch('https://api.github.com/users/shasankp000');
+        const userData = await userResponse.json();
+        
+        // Fetch recent commits from all repositories for more accurate counting
+        const reposResponse = await fetch('https://api.github.com/users/shasankp000/repos?per_page=100');
+        const reposData = await reposResponse.json();
+        
+        // Calculate commits more accurately
+        let thisYearCommits = 0;
+        let thisMonthCommits = 0;
+        const currentYear = new Date().getFullYear();
+        const currentMonth = new Date().getMonth();
+        
+        // For a more accurate count, we'll use the events API and repository stats
+        const eventsResponse = await fetch('https://api.github.com/users/shasankp000/events?per_page=100');
+        const eventsData = await eventsResponse.json();
+        
+        if (Array.isArray(eventsData)) {
+          eventsData.forEach(event => {
+            if (event.type === 'PushEvent') {
+              const eventDate = new Date(event.created_at);
+              const eventYear = eventDate.getFullYear();
+              const eventMonth = eventDate.getMonth();
+              
+              if (eventYear === currentYear) {
+                const commitCount = event.payload.commits ? event.payload.commits.length : 0;
+                thisYearCommits += commitCount;
+                
+                if (eventMonth === currentMonth) {
+                  thisMonthCommits += commitCount;
+                }
+              }
+            }
+          });
+        }
+        
+        // Set profile data
+        setProfileData({
+          bio: userData.bio || 'Passionate developer working on AI and machine learning projects.',
+          name: userData.name || 'Shasank',
+          company: userData.company || '',
+          location: userData.location || '',
+          blog: userData.blog || '',
+          loading: false
+        });
+        
+        setGithubStats({
+          totalCommits: thisYearCommits,
+          publicRepos: userData.public_repos || 0,
+          followers: userData.followers || 0,
+          thisYearCommits: thisYearCommits,
+          thisMonthCommits: thisMonthCommits,
+          loading: false
+        });
+
+        // Fetch achievements (using a combination of user data and repository data)
+        const achievementsData = [];
+        
+        // Add dynamic achievements based on actual data
+        if (userData.followers > 100) {
+          achievementsData.push({ icon: '👥', text: `${userData.followers}+ GitHub Followers` });
+        }
+        if (userData.public_repos > 20) {
+          achievementsData.push({ icon: '📚', text: `${userData.public_repos} Public Repositories` });
+        }
+        if (thisYearCommits > 500) {
+          achievementsData.push({ icon: '🔥', text: `${thisYearCommits}+ Commits This Year` });
+        }
+        if (Array.isArray(reposData)) {
+          const totalStars = reposData.reduce((sum, repo) => sum + (repo.stargazers_count || 0), 0);
+          if (totalStars > 10) {
+            achievementsData.push({ icon: '⭐', text: `${totalStars} Total Stars` });
+          }
+        }
+        
+        // Add some default achievements
+        achievementsData.push(
+          { icon: '🤖', text: 'AI/ML Developer' },
+          { icon: '🎯', text: 'Minecraft Modder' },
+          { icon: '💻', text: 'CS Student' }
+        );
+        
+        setAchievements({
+          data: achievementsData,
+          loading: false
+        });
+
+        // Fetch GitHub activity timeline
+        const activityData = [];
+        if (Array.isArray(reposData)) {
+          // Get recent public repositories with activity
+          const sortedRepos = reposData
+            .filter(repo => !repo.private) // Only public repos
+            .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
+            .slice(0, 6);
+
+          activityData.push(...sortedRepos.map(repo => ({
+            name: repo.name,
+            description: repo.description,
+            language: repo.language,
+            stars: repo.stargazers_count,
+            forks: repo.forks_count,
+            updated: repo.updated_at,
+            url: repo.html_url,
+            created: repo.created_at
+          })));
+        }
+
+        setGithubActivity({
+          contributions: eventsData.slice(0, 10), // Recent events
+          recentRepos: activityData,
+          loading: false
+        });
+        
+      } catch (error) {
+        console.error('Error fetching GitHub data:', error);
+        setGithubStats(prev => ({ ...prev, loading: false }));
+        setProfileData(prev => ({ ...prev, loading: false }));
+        setAchievements(prev => ({ ...prev, loading: false }));
+      }
+    };
+
+    fetchGitHubData();
+  }, []);
+
   // Fetch AI-Player contributors
   useEffect(() => {
     const fetchContributors = async () => {
@@ -93,11 +256,23 @@ const About = () => {
               {/* GitHub Stats */}
               <div className="grid grid-cols-2 gap-4 mb-6">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-amber-600">141</div>
+                  <div className="text-2xl font-bold text-amber-600">
+                    {githubStats.loading ? (
+                      <span className="animate-pulse bg-amber-100 rounded px-2 py-1 text-sm">...</span>
+                    ) : (
+                      githubStats.followers
+                    )}
+                  </div>
                   <div className="text-sm text-slate-600">Followers</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-orange-600">30</div>
+                  <div className="text-2xl font-bold text-orange-600">
+                    {githubStats.loading ? (
+                      <span className="animate-pulse bg-orange-100 rounded px-2 py-1 text-sm">...</span>
+                    ) : (
+                      githubStats.publicRepos
+                    )}
+                  </div>
                   <div className="text-sm text-slate-600">Repositories</div>
                 </div>
               </div>
@@ -106,22 +281,21 @@ const About = () => {
               <div className="mb-6">
                 <h4 className="text-sm font-semibold text-slate-700 mb-3">🏆 GitHub Achievements</h4>
                 <div className="grid grid-cols-2 gap-2">
-                  <div className="p-2 bg-amber-50 rounded-lg text-center">
-                    <div className="text-lg">🤝</div>
-                    <div className="text-xs text-slate-600">Pair Extraordinaire</div>
-                  </div>
-                  <div className="p-2 bg-orange-50 rounded-lg text-center">
-                    <div className="text-lg">🎯</div>
-                    <div className="text-xs text-slate-600">YOLO</div>
-                  </div>
-                  <div className="p-2 bg-blue-50 rounded-lg text-center">
-                    <div className="text-lg">🦈</div>
-                    <div className="text-xs text-slate-600">Pull Shark</div>
-                  </div>
-                  <div className="p-2 bg-purple-50 rounded-lg text-center">
-                    <div className="text-lg">⭐</div>
-                    <div className="text-xs text-slate-600">Starstruck</div>
-                  </div>
+                  {achievements.loading ? (
+                    Array.from({ length: 4 }).map((_, i) => (
+                      <div key={i} className="p-2 bg-slate-100 rounded-lg text-center animate-pulse">
+                        <div className="h-6 bg-slate-200 rounded mb-1"></div>
+                        <div className="h-3 bg-slate-200 rounded"></div>
+                      </div>
+                    ))
+                  ) : (
+                    achievements.data.slice(0, 6).map((achievement, index) => (
+                      <div key={index} className="p-2 bg-gradient-to-br from-amber-50 to-orange-50 rounded-lg text-center border border-amber-100 hover:shadow-md transition-all">
+                        <div className="text-lg">{achievement.icon}</div>
+                        <div className="text-xs text-slate-600 font-medium">{achievement.text}</div>
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
 
@@ -182,16 +356,44 @@ const About = () => {
                     <h4 className="font-semibold text-slate-800 mb-3">📈 Activity Overview</h4>
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
-                        <span className="text-slate-600">Total Commits (2024):</span>
-                        <span className="font-semibold text-slate-800">1,604</span>
+                        <span className="text-slate-600">Total Commits (2025):</span>
+                        <span className="font-semibold text-slate-800">
+                          {githubStats.loading ? (
+                            <span className="animate-pulse bg-slate-200 rounded px-2 py-1">Loading...</span>
+                          ) : (
+                            githubStats.thisYearCommits.toLocaleString()
+                          )}
+                        </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-slate-600">Active Repositories:</span>
-                        <span className="font-semibold text-slate-800">30</span>
+                        <span className="text-slate-600">This Month:</span>
+                        <span className="font-semibold text-orange-600">
+                          {githubStats.loading ? (
+                            <span className="animate-pulse bg-slate-200 rounded px-2 py-1">Loading...</span>
+                          ) : (
+                            `${githubStats.thisMonthCommits} commits`
+                          )}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-600">Public Repositories:</span>
+                        <span className="font-semibold text-slate-800">
+                          {githubStats.loading ? (
+                            <span className="animate-pulse bg-slate-200 rounded px-2 py-1">Loading...</span>
+                          ) : (
+                            githubStats.publicRepos
+                          )}
+                        </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-slate-600">GitHub Followers:</span>
-                        <span className="font-semibold text-slate-800">141</span>
+                        <span className="font-semibold text-slate-800">
+                          {githubStats.loading ? (
+                            <span className="animate-pulse bg-slate-200 rounded px-2 py-1">Loading...</span>
+                          ) : (
+                            githubStats.followers.toLocaleString()
+                          )}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -205,7 +407,11 @@ const About = () => {
                 About Me
               </h3>
               <p className="text-lg text-slate-600 leading-relaxed mb-6">
-                💡 Final-year Computer Science student | Assistant AI researcher (UoM) | Builder of experimental AI systems in games & beyond.
+                {profileData.loading ? (
+                  <span className="animate-pulse bg-slate-200 rounded px-2 py-1">Loading bio...</span>
+                ) : (
+                  profileData.bio
+                )}
               </p>
               <div className="mb-6">
                 <h4 className="font-semibold text-slate-800 mb-3">🚀 Current Focus:</h4>
@@ -245,14 +451,20 @@ const About = () => {
               </h3>
               <div className="grid md:grid-cols-2 gap-8">
                 {/* AI-Player */}
-                <div className="p-8 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl border border-blue-200 hover:shadow-lg transition-shadow duration-300">
-                  <div className="flex items-start justify-between mb-6">
-                    <h4 className="text-lg font-bold text-slate-800">AI-Player</h4>
-                    <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">Public</span>
-                  </div>
-                  <p className="text-sm text-slate-600 mb-6">
-                    A minecraft mod which aims to add a "second player" into the game which will actually be intelligent.
-                  </p>
+                <a 
+                  href="https://github.com/shasankp000/AI-Player" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="block group"
+                >
+                  <div className="p-8 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl border border-blue-200 hover:shadow-lg transition-all duration-300 cursor-pointer group-hover:scale-105 group-hover:border-blue-300">
+                    <div className="flex items-start justify-between mb-6">
+                      <h4 className="text-lg font-bold text-slate-800 group-hover:text-blue-700 transition-colors">AI-Player</h4>
+                      <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">Public</span>
+                    </div>
+                    <p className="text-sm text-slate-600 mb-6">
+                      A minecraft mod which aims to add a "second player" into the game which will actually be intelligent.
+                    </p>
                   
                   {/* Contributors */}
                   <div className="mb-6">
@@ -313,25 +525,32 @@ const About = () => {
                         🍴 11
                       </span>
                     </div>
-                    <a href="https://github.com/shasankp000/AI-Player" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                    <span className="text-blue-600 group-hover:text-blue-800 text-sm font-medium group-hover:translate-x-1 transition-transform duration-200">
                       View →
-                    </a>
+                    </span>
                   </div>
                 </div>
+                </a>
 
                 {/* PyCraft */}
-                <div className="p-8 bg-gradient-to-br from-green-50 to-emerald-100 rounded-xl border border-green-200 hover:shadow-lg transition-shadow duration-300">
-                  <div className="flex items-start justify-between mb-6">
-                    <h4 className="text-lg font-bold text-slate-800">PyCraft</h4>
-                    <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Public</span>
-                  </div>
+                <a 
+                  href="https://github.com/shasankp000/PyCraft" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="block group"
+                >
+                  <div className="p-8 bg-gradient-to-br from-green-50 to-emerald-100 rounded-xl border border-green-200 hover:shadow-lg transition-all duration-300 cursor-pointer group-hover:scale-105 group-hover:border-green-300">
+                    <div className="flex items-start justify-between mb-6">
+                      <h4 className="text-lg font-bold text-slate-800 group-hover:text-green-700 transition-colors">PyCraft</h4>
+                      <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Public</span>
+                    </div>
                   <p className="text-sm text-slate-600 mb-6">
                     A Minecraft launcher made in python.
                   </p>
                   
                   {/* Contributors */}
-                  <div className="mb-4">
-                    <div className="flex items-center space-x-2 mb-2">
+                  <div className="mb-6">
+                    <div className="flex items-center space-x-2 mb-3">
                       <span className="text-xs font-semibold text-slate-700">👥 Contributors:</span>
                     </div>
                     <div className="flex items-center space-x-2">
@@ -360,18 +579,25 @@ const About = () => {
                         🍴 7
                       </span>
                     </div>
-                    <a href="https://github.com/shasankp000/PyCraft" target="_blank" rel="noopener noreferrer" className="text-green-600 hover:text-green-800 text-sm font-medium">
+                    <span className="text-green-600 group-hover:text-green-800 text-sm font-medium group-hover:translate-x-1 transition-transform duration-200">
                       View →
-                    </a>
+                    </span>
                   </div>
                 </div>
+                </a>
 
                 {/* PyMicMute */}
-                <div className="p-8 bg-gradient-to-br from-purple-50 to-violet-100 rounded-xl border border-purple-200 hover:shadow-lg transition-shadow duration-300">
-                  <div className="flex items-start justify-between mb-6">
-                    <h4 className="text-lg font-bold text-slate-800">PyMicMute</h4>
-                    <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full">Public</span>
-                  </div>
+                <a 
+                  href="https://github.com/shasankp000/PyMicMute" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="block group"
+                >
+                  <div className="p-8 bg-gradient-to-br from-purple-50 to-violet-100 rounded-xl border border-purple-200 hover:shadow-lg transition-all duration-300 cursor-pointer group-hover:scale-105 group-hover:border-purple-300">
+                    <div className="flex items-start justify-between mb-6">
+                      <h4 className="text-lg font-bold text-slate-800 group-hover:text-purple-700 transition-colors">PyMicMute</h4>
+                      <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full">Public</span>
+                    </div>
                   <p className="text-sm text-slate-600 mb-6">
                     A simple master microphone muting/unmuting app which supports custom keybinds and also has in-built notification support for mute/unmute events.
                   </p>
@@ -404,18 +630,25 @@ const About = () => {
                         ⭐ 3
                       </span>
                     </div>
-                    <a href="https://github.com/shasankp000/PyMicMute" target="_blank" rel="noopener noreferrer" className="text-purple-600 hover:text-purple-800 text-sm font-medium">
+                    <span className="text-purple-600 group-hover:text-purple-800 text-sm font-medium group-hover:translate-x-1 transition-transform duration-200">
                       View →
-                    </a>
+                    </span>
                   </div>
                 </div>
+                </a>
 
                 {/* CSE-Engineering-Notes */}
-                <div className="p-8 bg-gradient-to-br from-yellow-50 to-amber-100 rounded-xl border border-yellow-200 hover:shadow-lg transition-shadow duration-300">
-                  <div className="flex items-start justify-between mb-6">
-                    <h4 className="text-lg font-bold text-slate-800">CSE-Engineering-Notes</h4>
-                    <span className="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full">Public</span>
-                  </div>
+                <a 
+                  href="https://github.com/shasankp000/CSE-Engineering-Notes" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="block group"
+                >
+                  <div className="p-8 bg-gradient-to-br from-yellow-50 to-amber-100 rounded-xl border border-yellow-200 hover:shadow-lg transition-all duration-300 cursor-pointer group-hover:scale-105 group-hover:border-yellow-300">
+                    <div className="flex items-start justify-between mb-6">
+                      <h4 className="text-lg font-bold text-slate-800 group-hover:text-yellow-700 transition-colors">CSE-Engineering-Notes</h4>
+                      <span className="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full">Public</span>
+                    </div>
                   <p className="text-sm text-slate-600 mb-6">
                     A free repository of high quality free custom made notes on the various subjects under CS
                   </p>
@@ -456,11 +689,12 @@ const About = () => {
                         ⭐ 1
                       </span>
                     </div>
-                    <a href="https://github.com/shasankp000/CSE-Engineering-Notes" target="_blank" rel="noopener noreferrer" className="text-yellow-600 hover:text-yellow-800 text-sm font-medium">
+                    <span className="text-yellow-600 group-hover:text-yellow-800 text-sm font-medium group-hover:translate-x-1 transition-transform duration-200">
                       View →
-                    </a>
+                    </span>
                   </div>
                 </div>
+                </a>
               </div>
               
               <div className="mt-6 text-center">
@@ -471,138 +705,156 @@ const About = () => {
               </div>
             </div>
 
-            {/* Project Timeline */}
-            <div className="bg-white/70 backdrop-blur-xl rounded-2xl border border-yellow-200 shadow-lg p-8">
+            {/* GitHub Activity Timeline */}
+            <div className="bg-white/70 backdrop-blur-xl rounded-2xl border border-amber-200 shadow-lg p-8">
               <h3 className="text-2xl font-bold text-slate-800 mb-6 flex items-center">
-                <span className="text-2xl mr-3">⏰</span>
-                Development Timeline
+                <span className="text-2xl mr-3">📊</span>
+                Recent GitHub Activity
               </h3>
-              <div className="relative">
-                {/* Timeline line */}
-                <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-gradient-to-b from-amber-400 via-orange-400 to-yellow-400"></div>
-                
-                <div className="space-y-8">
-                  {/* 2024 - Current */}
-                  <div className="relative flex items-start space-x-6">
-                    <div className="w-8 h-8 bg-amber-400 rounded-full flex items-center justify-center z-10 shadow-lg">
-                      <span className="text-white text-sm font-bold">24</span>
-                    </div>
-                    <div className="flex-1 pb-8">
-                      <div className="flex items-center space-x-3 mb-2">
-                        <h4 className="text-lg font-bold text-slate-800">2024 - Present</h4>
-                        <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">Current</span>
+              
+              {githubActivity.loading ? (
+                <div className="space-y-4">
+                  {[...Array(4)].map((_, i) => (
+                    <div key={i} className="animate-pulse">
+                      <div className="flex items-center space-x-4">
+                        <div className="w-12 h-12 bg-slate-200 rounded-full"></div>
+                        <div className="flex-1">
+                          <div className="h-4 bg-slate-200 rounded w-3/4 mb-2"></div>
+                          <div className="h-3 bg-slate-200 rounded w-1/2"></div>
+                        </div>
                       </div>
-                      <p className="text-slate-600 mb-3">
-                        <strong>AI-Player Website Launch</strong> - Comprehensive project documentation and community building
-                      </p>
-                      <div className="space-y-2 text-sm text-slate-600">
-                        <div className="flex items-center">
-                          <span className="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
-                          84% focus on website development & deployment
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  {/* Recent Repositories */}
+                  <div>
+                    <h4 className="font-semibold text-slate-800 mb-4 flex items-center">
+                      <span className="text-lg mr-2">📚</span>
+                      Recently Active Projects (Public Only)
+                    </h4>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      {githubActivity.recentRepos.slice(0, 4).map((repo, index) => (
+                        <a
+                          key={repo.name}
+                          href={repo.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block group"
+                        >
+                          <div className="p-4 bg-gradient-to-br from-slate-50 to-slate-100 rounded-lg border border-slate-200 hover:shadow-md transition-all duration-200 group-hover:scale-102">
+                            <div className="flex items-start justify-between mb-2">
+                              <h5 className="font-semibold text-slate-800 group-hover:text-amber-600 transition-colors">
+                                {repo.name}
+                              </h5>
+                              <span className="text-xs bg-amber-100 text-amber-700 px-2 py-1 rounded-full">
+                                {new Date(repo.updated).toLocaleDateString()}
+                              </span>
+                            </div>
+                            <p className="text-sm text-slate-600 mb-3 line-clamp-2">
+                              {repo.description || 'No description available'}
+                            </p>
+                            <div className="flex items-center justify-between text-xs text-slate-500">
+                              <div className="flex items-center space-x-3">
+                                {repo.language && (
+                                  <span className="flex items-center">
+                                    <span className={`w-2 h-2 rounded-full mr-1 ${
+                                      repo.language === 'Java' ? 'bg-orange-500' :
+                                      repo.language === 'Python' ? 'bg-blue-500' :
+                                      repo.language === 'JavaScript' ? 'bg-yellow-500' :
+                                      repo.language === 'TypeScript' ? 'bg-blue-600' :
+                                      repo.language === 'HTML' ? 'bg-red-500' :
+                                      'bg-gray-500'
+                                    }`}></span>
+                                    {repo.language}
+                                  </span>
+                                )}
+                                <span className="flex items-center">
+                                  ⭐ {repo.stars}
+                                </span>
+                                <span className="flex items-center">
+                                  🍴 {repo.forks}
+                                </span>
+                              </div>
+                              <span className="text-amber-600 group-hover:text-amber-700 group-hover:translate-x-1 transition-all">
+                                View →
+                              </span>
+                            </div>
+                          </div>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Contribution Stats */}
+                  <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg p-6 border border-amber-200">
+                    <h4 className="font-semibold text-slate-800 mb-4 flex items-center">
+                      <span className="text-lg mr-2">📈</span>
+                      October 2025 Activity
+                    </h4>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-amber-600">
+                          {githubStats.thisMonthCommits}
                         </div>
-                        <div className="flex items-center">
-                          <span className="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
-                          GitHub Pages integration with custom domain
+                        <div className="text-sm text-slate-600">Commits</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-orange-600">
+                          {githubActivity.recentRepos.filter(repo => 
+                            new Date(repo.updated).getMonth() === new Date().getMonth()
+                          ).length}
                         </div>
-                        <div className="flex items-center">
-                          <span className="w-2 h-2 bg-purple-400 rounded-full mr-2"></span>
-                          Real-time GitHub & Modrinth statistics integration
+                        <div className="text-sm text-slate-600">Active Repos</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-green-600">
+                          {githubStats.thisYearCommits}
                         </div>
+                        <div className="text-sm text-slate-600">Year Total</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-blue-600">
+                          {githubStats.publicRepos}
+                        </div>
+                        <div className="text-sm text-slate-600">Public Repos</div>
                       </div>
                     </div>
                   </div>
 
-                  {/* 2023-2024 - AI Player Development */}
-                  <div className="relative flex items-start space-x-6">
-                    <div className="w-8 h-8 bg-orange-400 rounded-full flex items-center justify-center z-10 shadow-lg">
-                      <span className="text-white text-sm font-bold">23</span>
-                    </div>
-                    <div className="flex-1 pb-8">
-                      <div className="flex items-center space-x-3 mb-2">
-                        <h4 className="text-lg font-bold text-slate-800">2023-2024</h4>
-                        <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">Major Release</span>
-                      </div>
-                      <p className="text-slate-600 mb-3">
-                        <strong>AI-Player Mod Core Development</strong> - Advanced AI systems and NLP integration
-                      </p>
-                      <div className="space-y-2 text-sm text-slate-600">
-                        <div className="flex items-center">
-                          <span className="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
-                          Pathfinding & environmental interaction systems
-                        </div>
-                        <div className="flex items-center">
-                          <span className="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
-                          LLM integration for natural conversations
-                        </div>
-                        <div className="flex items-center">
-                          <span className="w-2 h-2 bg-purple-400 rounded-full mr-2"></span>
-                          Reinforcement learning for goal-oriented behavior
+                  {/* Focus Areas */}
+                  <div>
+                    <h4 className="font-semibold text-slate-800 mb-4 flex items-center">
+                      <span className="text-lg mr-2">🎯</span>
+                      Current Focus Areas
+                    </h4>
+                    <div className="grid md:grid-cols-3 gap-4">
+                      <div className="p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg border border-green-200">
+                        <div className="text-center">
+                          <div className="text-2xl mb-2">🌐</div>
+                          <div className="font-semibold text-green-700">AI-Player Website</div>
+                          <div className="text-sm text-green-600">84% of commits</div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-
-                  {/* 2022-2023 - Foundation Projects */}
-                  <div className="relative flex items-start space-x-6">
-                    <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center z-10 shadow-lg">
-                      <span className="text-white text-sm font-bold">22</span>
-                    </div>
-                    <div className="flex-1 pb-8">
-                      <div className="flex items-center space-x-3 mb-2">
-                        <h4 className="text-lg font-bold text-slate-800">2022-2023</h4>
-                        <span className="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-full">Foundation</span>
-                      </div>
-                      <p className="text-slate-600 mb-3">
-                        <strong>PyCraft Launcher & Utility Projects</strong> - Python-based tools and launchers
-                      </p>
-                      <div className="space-y-2 text-sm text-slate-600">
-                        <div className="flex items-center">
-                          <span className="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
-                          PyCraft: Minecraft launcher with 83 stars
-                        </div>
-                        <div className="flex items-center">
-                          <span className="w-2 h-2 bg-purple-400 rounded-full mr-2"></span>
-                          PyMicMute: Audio control utility
-                        </div>
-                        <div className="flex items-center">
-                          <span className="w-2 h-2 bg-yellow-400 rounded-full mr-2"></span>
-                          CS Engineering Notes platform
+                      <div className="p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
+                        <div className="text-center">
+                          <div className="text-2xl mb-2">🤖</div>
+                          <div className="font-semibold text-blue-700">AI-Player Mod</div>
+                          <div className="text-sm text-blue-600">9% of commits</div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-
-                  {/* Future Plans */}
-                  <div className="relative flex items-start space-x-6">
-                    <div className="w-8 h-8 bg-gradient-to-r from-amber-400 to-orange-400 rounded-full flex items-center justify-center z-10 shadow-lg">
-                      <span className="text-white text-sm font-bold">🚀</span>
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-3 mb-2">
-                        <h4 className="text-lg font-bold text-slate-800">2025 & Beyond</h4>
-                        <span className="px-2 py-1 bg-gradient-to-r from-amber-100 to-orange-100 text-amber-700 text-xs rounded-full">Future Vision</span>
-                      </div>
-                      <p className="text-slate-600 mb-3">
-                        <strong>Next-Generation AI Companions</strong> - Scaling beyond Minecraft to universal AI systems
-                      </p>
-                      <div className="space-y-2 text-sm text-slate-600">
-                        <div className="flex items-center">
-                          <span className="w-2 h-2 bg-gradient-to-r from-purple-400 to-blue-400 rounded-full mr-2"></span>
-                          Human-brain-inspired AGI architecture
-                        </div>
-                        <div className="flex items-center">
-                          <span className="w-2 h-2 bg-gradient-to-r from-green-400 to-blue-400 rounded-full mr-2"></span>
-                          Cross-platform AI companion deployment
-                        </div>
-                        <div className="flex items-center">
-                          <span className="w-2 h-2 bg-gradient-to-r from-amber-400 to-orange-400 rounded-full mr-2"></span>
-                          Private, emotion-aware AI systems
+                      <div className="p-4 bg-gradient-to-br from-purple-50 to-violet-50 rounded-lg border border-purple-200">
+                        <div className="text-center">
+                          <div className="text-2xl mb-2">📝</div>
+                          <div className="font-semibold text-purple-700">Profile Updates</div>
+                          <div className="text-sm text-purple-600">7% of commits</div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
 
             {/* Skills & Tools */}
