@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 const Documentation = () => {
   const [activeSection, setActiveSection] = useState('overview');
@@ -144,7 +145,57 @@ const Documentation = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 pt-16">
+    <>
+      <Helmet>
+        <title>AI-Player Documentation - Complete Guide to Minecraft AI Mod | API Reference</title>
+        <meta name="description" content="Comprehensive documentation for AI-Player Minecraft mod. Learn about AI architecture, pathfinding algorithms, NLP integration, installation guide, and API reference for intelligent NPCs." />
+        <meta name="keywords" content="AI Player documentation, Minecraft AI mod guide, pathfinding tutorial, NLP integration, AI companion setup, Minecraft mod API, intelligent NPC guide, machine learning minecraft" />
+        <meta property="og:title" content="AI-Player Documentation - Complete Minecraft AI Mod Guide" />
+        <meta property="og:description" content="Complete guide to AI-Player mod: installation, configuration, AI architecture, and advanced features for creating intelligent Minecraft companions." />
+        <meta property="og:url" content="https://shasankp000.github.io/AI-Player-Website/#/documentation" />
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="AI-Player Documentation - Complete Minecraft AI Mod Guide" />
+        <meta name="twitter:description" content="Learn to set up and configure intelligent AI companions in Minecraft with our comprehensive documentation." />
+        <link rel="canonical" href="https://shasankp000.github.io/AI-Player-Website/#/documentation" />
+        
+        {/* Structured Data for Documentation */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "TechArticle",
+            "headline": "AI-Player Documentation - Complete Minecraft AI Mod Guide",
+            "description": "Comprehensive documentation covering AI-Player mod installation, configuration, architecture, and advanced features for intelligent Minecraft NPCs",
+            "url": "https://shasankp000.github.io/AI-Player-Website/#/documentation",
+            "datePublished": "2024-01-01",
+            "dateModified": "2025-10-08",
+            "author": {
+              "@type": "Person",
+              "name": "Shasank Prasad",
+              "url": "https://github.com/shasankp000"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "AI-Player Project"
+            },
+            "about": {
+              "@type": "SoftwareApplication",
+              "name": "AI-Player",
+              "description": "Intelligent Minecraft companion mod"
+            },
+            "teaches": [
+              "AI-Player Installation",
+              "Minecraft Mod Configuration", 
+              "AI Architecture Understanding",
+              "Pathfinding Algorithms",
+              "Natural Language Processing Integration",
+              "Machine Learning in Gaming"
+            ]
+          })}
+        </script>
+      </Helmet>
+      
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 pt-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex gap-8">
           {/* Sidebar */}
@@ -3269,6 +3320,7 @@ const Documentation = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

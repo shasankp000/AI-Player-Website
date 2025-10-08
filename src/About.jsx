@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Helmet } from 'react-helmet';
 
 const About = () => {
   const aboutRef = useRef(null);
@@ -243,7 +244,56 @@ const About = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 overflow-hidden pt-20">
+    <>
+      <Helmet>
+        <title>About Shasank Prasad - AI-Player Developer | Machine Learning Engineer</title>
+        <meta name="description" content="Meet Shasank Prasad, the creator of AI-Player Minecraft mod. CS student and AI researcher specializing in artificial intelligence companions, NLP, and machine learning in gaming." />
+        <meta name="keywords" content="Shasank Prasad, AI Player developer, machine learning engineer, AI researcher, Minecraft mod developer, artificial intelligence, NLP engineer, CS student India" />
+        <meta property="og:title" content="About Shasank Prasad - AI-Player Developer" />
+        <meta property="og:description" content="Meet the developer behind AI-Player mod. Passionate about AI companions, machine learning, and creating intelligent gaming experiences." />
+        <meta property="og:url" content="https://shasankp000.github.io/AI-Player-Website/#/about" />
+        <meta property="og:type" content="profile" />
+        <meta property="og:image" content="https://avatars.githubusercontent.com/u/46317225?v=4" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="About Shasank Prasad - AI-Player Developer" />
+        <meta name="twitter:description" content="Meet the developer behind AI-Player mod. Passionate about AI companions and intelligent gaming experiences." />
+        <link rel="canonical" href="https://shasankp000.github.io/AI-Player-Website/#/about" />
+        
+        {/* Structured Data for Person */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "Shasank Prasad",
+            "jobTitle": "Computer Science Student & AI Researcher",
+            "description": "Creator of AI-Player Minecraft mod, specializing in artificial intelligence companions and machine learning in gaming",
+            "url": "https://shasankp000.github.io/AI-Player-Website/#/about",
+            "sameAs": [
+              "https://github.com/shasankp000"
+            ],
+            "knowsAbout": [
+              "Artificial Intelligence",
+              "Machine Learning", 
+              "Natural Language Processing",
+              "Minecraft Modding",
+              "Java Programming",
+              "Python Programming",
+              "AI Companions"
+            ],
+            "alumniOf": {
+              "@type": "EducationalOrganization", 
+              "name": "Computer Science Program"
+            },
+            "creator": {
+              "@type": "SoftwareApplication",
+              "name": "AI-Player",
+              "description": "Intelligent Minecraft companion mod"
+            }
+          })}
+        </script>
+      </Helmet>
+      
+      <div className="relative min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 overflow-hidden pt-20">
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-amber-300/20 rounded-full blur-3xl"></div>
@@ -1030,6 +1080,7 @@ const About = () => {
         </div>
       </section>
     </div>
+    </>
   );
 };
 

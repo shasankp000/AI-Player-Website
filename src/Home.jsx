@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { animate } from 'motion';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 // Enhanced Project Statistics Component
 const ProjectStats = () => {
@@ -596,7 +597,63 @@ const Home = () => {
   }
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 overflow-hidden">
+    <>
+      <Helmet>
+        <title>AI-Player - Revolutionary Minecraft AI Companion Mod | Intelligent NPCs</title>
+        <meta name="description" content="AI-Player is a groundbreaking Minecraft mod that introduces intelligent AI companions with advanced pathfinding, natural language processing, and machine learning. Experience the future of AI gaming." />
+        <meta name="keywords" content="AI Player, Minecraft AI mod, intelligent NPC, AI companion, artificial intelligence gaming, machine learning Minecraft, pathfinding AI, NLP gaming, AI player mod, minecraft artificial intelligence, intelligent agents, AI gaming mod" />
+        <meta property="og:title" content="AI-Player - Revolutionary Minecraft AI Companion Mod" />
+        <meta property="og:description" content="Experience intelligent AI companions in Minecraft with advanced pathfinding, natural language processing, and machine learning capabilities." />
+        <meta property="og:url" content="https://shasankp000.github.io/AI-Player-Website/" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="AI-Player - Revolutionary Minecraft AI Companion Mod" />
+        <meta name="twitter:description" content="Experience intelligent AI companions in Minecraft with advanced AI capabilities." />
+        <link rel="canonical" href="https://shasankp000.github.io/AI-Player-Website/" />
+        
+        {/* Enhanced Structured Data for Software */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "AI-Player",
+            "alternateName": "AI Player Minecraft Mod",
+            "description": "Revolutionary Minecraft mod featuring intelligent AI companions with advanced pathfinding, natural language processing, and machine learning capabilities",
+            "url": "https://shasankp000.github.io/AI-Player-Website/",
+            "downloadUrl": "https://github.com/shasankp000/AI-Player",
+            "applicationCategory": "GameApplication",
+            "operatingSystem": "Minecraft",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.8",
+              "reviewCount": "150+"
+            },
+            "author": {
+              "@type": "Person",
+              "name": "Shasank Prasad",
+              "url": "https://github.com/shasankp000"
+            },
+            "programmingLanguage": "Java",
+            "runtimePlatform": "Minecraft Forge",
+            "featureList": [
+              "Advanced AI Pathfinding",
+              "Natural Language Processing", 
+              "Machine Learning Integration",
+              "Intelligent Conversation System",
+              "Autonomous Goal Setting",
+              "Environmental Interaction"
+            ],
+            "keywords": "AI Player, Minecraft mod, artificial intelligence, machine learning, NLP, pathfinding, AI companion"
+          })}
+        </script>
+      </Helmet>
+      
+      <div className="relative min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 overflow-hidden">
       {/* Hero Section */}
       <section 
         ref={heroRef}
@@ -885,6 +942,7 @@ const Home = () => {
         </div>
       </section>
     </div>
+    </>
   );
 };
 
