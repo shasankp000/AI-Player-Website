@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { animate } from 'motion';
 import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 // Enhanced Project Statistics Component
 const ProjectStats = () => {
